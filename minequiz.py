@@ -1,56 +1,49 @@
 import os
 import time
-import subprocess
 import platform
 import re
-
 import pyperclip
 import keyboard
 
-regexp = r"\d+ \+ \d+"
-patt = re.compile(regexp)
-
-enter_sequence = 'ctrl+v, enter'
+addition_pattern = re.compile(r"(\d+) \+ (\d+)")
 
 if platform.system() == 'Darwin':
-    logfile = open(os.path.expanduser("~/Library/Application Support/minecraft/logs/latest.log"), "r", encoding="utf-8")
+    mc_log_path = os.path.expanduser("~/Library/Application Support/minecraft/logs/latest.log")
 elif platform.system() == 'Windows':
-    logfile = open(os.getenv("APPDATA") + "/.minecraft/logs/latest.log", "r")
+    mc_log_path = os.getenv("APPDATA") + "/.minecraft/logs/latest.log"
 else:
-    logfile = open(os.path.expanduser("~/.minecraft/logs/latest.log"), "r", encoding="utf-8")
+    mc_log_path = os.path.expanduser("~/.minecraft/logs/latest.log")
 
 
 def scroll_logs(logfile):
-  logfile.seek(0,2)
-  while True:
-    line = logfile.readline()
-    if not line: 
-        time.sleep(0.1)
-        continue
-    yield line
+    logfile.seek(0, 2)
+    while True:
+        line = logfile.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        yield line
 
+
+def main():
+    logfile = open(mc_log_path, "r", encoding='utf-8')
+    lines = scroll_logs(logfile)
+    for line in lines:
+        add_match = addition_pattern.search(line)
+        if add_match:
+            a, b = add_match.groups()
+            solution = int(a) + int(b)
+            print(solution)
+
+            pyperclip.copy(solution)
+
+            keyboard.press_and_release('t')
+            time.sleep(0.25)
+            keyboard.press_and_release(
+                'cmd+v, enter' if platform.system() == 'Darwin' else 'ctrl+v, enter'
+            )
+            pyperclip.copy(solution)
 
 
 if __name__ == "__main__":
-    lines = scroll_logs(logfile)
-    for line in lines:
-        if re.search(patt, line):
-                arr = line.split(" ")
-                solution = int(arr[7]) + int(arr[9])
-                print(solution)
-                pyperclip.copy(solution)
-
-
-                if platform.system() == 'Darwin':
-                    keyboard.press_and_release('t')
-                    time.sleep(0.25)
-                    keyboard.press_and_release('cmd+v, enter')
-                    pyperclip.copy(solution)
-                else:
-                    keyboard.press_and_release('t')
-                    time.sleep(0.25)
-                    keyboard.press_and_release(enter_sequence)
-                    pyperclip.copy(solution)
-
-
-
+    main()
