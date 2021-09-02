@@ -6,5 +6,7 @@ Main principle is simple: we scroll Minecraft's _latest.log_ in real-time, searc
 ## Changelogs: 
 
 _2sep2021_: hard-coded path is now gone, it uses either ENVVAR like "%AppData%" or expands home path. 
-_2sep2021_: script got a better way to scan for math expressions, uses regex, thanks, @Wirtos! 
+
+_2sep2021_: script got a better way to scan for math expressions, uses regex, thanks, @Wirtos!
+
 _2sep2021_: we finally got a cross-platform way of simulating keystrokes. a bit wancky but works. gotta clean up later. 
