@@ -10,7 +10,7 @@ import keyboard
 regexp = r"\d+ \+ \d+"
 patt = re.compile(regexp)
 
-enter_sequence = 't, ctrl+v, enter'
+enter_sequence = 'ctrl+v, enter'
 
 if platform.system() == 'Darwin':
     logfile = open(os.path.expanduser("~/Library/Application Support/minecraft/logs/latest.log"), "r", encoding="utf-8")
@@ -43,9 +43,14 @@ if __name__ == "__main__":
 
                 if platform.system() == 'Darwin':
                     keyboard.press_and_release('t')
+                    time.sleep(0.25)
                     keyboard.press_and_release('cmd+v, enter')
+                    pyperclip.copy(solution)
                 else:
+                    keyboard.press_and_release('t')
+                    time.sleep(0.25)
                     keyboard.press_and_release(enter_sequence)
+                    pyperclip.copy(solution)
 
 
 
