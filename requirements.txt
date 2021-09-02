@@ -1,0 +1,2 @@
+pasteboard==0.3.3
+pyperclip3==0.4.1
