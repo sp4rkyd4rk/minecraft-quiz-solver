@@ -2,12 +2,15 @@ import os
 import time
 import subprocess
 import platform
-import pyperclip
 import re
+
+import pyperclip
+import keyboard
 
 regexp = r"\d+ \+ \d+"
 patt = re.compile(regexp)
 
+enter_sequence = 't, ctrl+v, enter'
 
 if platform.system() == 'Darwin':
     logfile = open(os.path.expanduser("~/Library/Application Support/minecraft/logs/latest.log"), "r", encoding="utf-8")
@@ -37,7 +40,12 @@ if __name__ == "__main__":
                 print(solution)
                 pyperclip.copy(solution)
 
-        #if "[main/INFO]: [CHAT] Поздравляем" or "[main/INFO]: [CHAT] выйграл" not in line:
-        #    continue
-            
+
+                if platform.system() == 'Darwin':
+                    keyboard.press_and_release('t')
+                    keyboard.press_and_release('cmd+v, enter')
+                else:
+                    keyboard.press_and_release(enter_sequence)
+
+
 
