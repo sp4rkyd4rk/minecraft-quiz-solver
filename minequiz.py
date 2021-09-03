@@ -33,8 +33,8 @@ def main():
         if add_match:
             a, b = add_match.groups()
             solution = int(a) + int(b)
-            print(str(time.ctime()) + ":" + str(solution))
 
+            print(str(time.ctime()) + ": " + str(solution))
             pyperclip.copy(solution)
 
             keyboard.press_and_release('t')
